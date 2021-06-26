@@ -102,3 +102,21 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Environmental Variables File
+.env
+
+# CSV Data Files
+/data
+
+# .DS_Store
+.DS_Store
+
+#package-lock
+package-lock.json
+
+# TXT Backups
+/.backups
+
+# linkedList
+linkedList.js
