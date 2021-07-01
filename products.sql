@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS products;
 USE products;
 
     CREATE TABLE IF NOT EXISTS products (
-        id INT NOT NULL UNIQUE,
+        id INT NOT NULL,
         name VARCHAR(30),
         slogan VARCHAR(200),
         description VARCHAR(600),
@@ -14,14 +14,15 @@ USE products;
     );
 
     CREATE TABLE IF NOT EXISTS features (
-        id INT NOT NULL UNIQUE AUTO_INCREMENT,
+        id INT NOT NULL AUTO_INCREMENT,
+        product_id INT,
         feature VARCHAR(25),
         value VARCHAR(30),
         PRIMARY KEY (id)
     );
     
     CREATE TABLE IF NOT EXISTS styles (
-        style_id INT NOT NULL UNIQUE,
+        style_id INT NOT NULL,
         style_name VARCHAR(30),
         original_price VARCHAR(10),
         sale_price VARCHAR(10),
@@ -31,7 +32,7 @@ USE products;
     );
     
     CREATE TABLE IF NOT EXISTS skus (
-        sku INT NOT NULL UNIQUE,
+        sku INT NOT NULL,
         style_id INT,
         quantity INT,
         size VARCHAR(9),
@@ -39,17 +40,10 @@ USE products;
     );
 
     CREATE TABLE IF NOT EXISTS photos (
-        id INT NOT NULL UNIQUE,
+        id INT NOT NULL,
         style_id INT,
         thumbnail_url VARCHAR(180),
         url VARCHAR(180),
-        PRIMARY KEY (id)
-    );
-
-    CREATE TABLE IF NOT EXISTS products_features (
-        id INT NOT NULL UNIQUE AUTO_INCREMENT,
-        product_id INT NOT NULL,
-        features_id INT,
         PRIMARY KEY (id)
     );
 

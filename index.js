@@ -13,6 +13,7 @@ const SAMPLEPRODUCT = 'SAMPLEPRODUCT.csv';
 
 const sequelize = new Sequelize('products', 'root', null, { pool: {}, dialect: 'mysql', logging: false});
 
+const timer = ms => new Promise(res=>setTimeout(res, ms));
 
 // PRODUCTS ==================================================================================================
 function seedDBFromCSVStream(fileName) {
@@ -32,13 +33,16 @@ function seedDBFromCSVStream(fileName) {
         let inputArray = [];
         for (let i in lines) {
             let splitLines = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            inputArray.push(`(${splitLines[0]},${splitLines[1]},${splitLines[2]},${splitLines[3]},${splitLines[5]},"${splitLines[6]}")`);
+            inputArray.push(`(${splitLines[0]},${splitLines[1]},${splitLines[2]},${splitLines[3]},${splitLines[4]},"${splitLines[5]}")`);
+            // await timer(500); not here
         }
         const sql = `
             INSERT INTO products (id, name, slogan, description, category, default_price)
             VALUES ${inputArray.slice(1).join()};
             `;
+        // await timer(500); not here
         try {
+            // await timer(500); not here
             await sequelize.query(sql, { type: sequelize.QueryTypes.INSERT });
         }
         catch(err) { errors.push(err) }
@@ -69,10 +73,10 @@ function seedFeatures() {
         let inputArray = [];
         for (let i in lines) {
             let splitLines = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            inputArray.push(`(${splitLines[0]},${splitLines[2]},${splitLines[3]})`);
+            inputArray.push(`(${splitLines[0]},${splitLines[1]},${splitLines[2]},${splitLines[3]})`);
         }
         const sql = `
-            INSERT INTO features (id, feature, value)
+            INSERT INTO features (id, product_id, feature, value)
             VALUES ${inputArray.slice(1).join()};
             `;
         await sequelize.query(sql, { type: sequelize.QueryTypes.INSERT });
@@ -183,7 +187,6 @@ function seedPhotos() {
     .on('error', (err) => { throw new Error(err) })
     .on('end', () => console.log(count));
 }
-
 
 // RELATED ===================================================================================================
 function seedRelated() {

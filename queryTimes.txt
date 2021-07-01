@@ -1,0 +1,35 @@
+route, ms
+/products, 29, 57, 632, 243, 24, 8 (longer times deeper in db)
+/products/id, BROKEN
+/products/id/styles, 9060, 12290, 7640, 8470, 12320, 13510 (longer times for entries populated with "results" & deeper in db)
+/products/id/related, 2000, 1242, 1192, 1364, 1314, 1254 (no significant correlation between db index and time)
+
+SELECT table_schema AS "Database", 
+ROUND(SUM(index_length) / 1024 / 1024, 2) AS "Size (MB)" 
+FROM information_schema.TABLES 
+GROUP BY table_schema;
+
+
+SELECT
+        styles.style_id,styles.style_name,styles.original_price,styles.sale_price,styles.style_is_default,
+        photos.style_id, photos.thumbnail_url, photos.url,
+        skus.style_id, skus.sku, skus.size, skus.quantity
+    FROM styles
+        INNER JOIN photos
+            ON styles.style_id = photos.style_id
+        INNER JOIN skus
+            ON styles.style_id = skus.style_id
+    WHERE styles.product_id = "1";
+
+
+    SELECT
+        styles.style_id,styles.style_name,styles.original_price,styles.sale_price,styles.style_is_default,
+        group_concat(photos.thumbnail_url SEPARATOR "|") AS thumbnails, group_concat(photos.url SEPARATOR "|") AS urls,
+        group_concat(skus.sku SEPARATOR "|") AS skus, group_concat(skus.size SEPARATOR "|") AS sizes, group_concat(skus.quantity SEPARATOR "|") AS quantities
+    FROM styles
+        INNER JOIN photos
+            ON styles.style_id = photos.style_id
+        INNER JOIN skus
+            ON styles.style_id = skus.style_id
+    WHERE styles.product_id = 1
+    GROUP BY styles.style_id;`;
