@@ -53,3 +53,9 @@ USE products;
         related_product_id INT,
         PRIMARY KEY (id)
     );
+
+    ALTER TABLE features ADD INDEX (product_id);
+    ALTER TABLE styles ADD INDEX (product_id);
+    ALTER TABLE skus ADD INDEX (style_id);
+    ALTER TABLE photos ADD INDEX (style_id);
+    ALTER TABLE related_products ADD INDEX (current_product_id);

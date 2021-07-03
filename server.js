@@ -14,8 +14,8 @@ app.get(`/`, (req,res) => {
 });
 
 app.get(`/products`, (req,res) => {
-    const page = req.query.page;
-    const number = req.query.number;
+    const page = req.query.page || 1;
+    const number = req.query.number || 5;
     let sql = `
     SELECT
         id, name, slogan, description, category, default_price
